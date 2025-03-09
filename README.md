@@ -32,8 +32,18 @@ cd blogposts
 ```
 
 2. Configure o ambiente
+Ajuste as variáveis de banco de dados no arquivo .env conforme sua necessidade:
 ```bash
 cp .env.example .env
+```
+```bash
+env
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=blog_posts
+DB_PASSWORD=123456
 ```
 
 3. Inicie os containers
