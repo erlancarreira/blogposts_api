@@ -39,7 +39,6 @@ cp .env.example .env
 - (Opcional) Ajuste as variáveis de banco de dados no arquivo .env conforme sua necessidade:
 
 ```bash
-env
 DB_DATABASE=laravel
 DB_USERNAME=blog_posts
 DB_PASSWORD=123456
