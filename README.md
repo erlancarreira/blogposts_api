@@ -32,10 +32,12 @@ cd blogposts
 ```
 
 2. Configure o ambiente
-  - Ajuste as variáveis de banco de dados no arquivo .env conforme sua necessidade:
+  
 ```bash
 cp .env.example .env
 ```
+- (Opcional) Ajuste as variáveis de banco de dados no arquivo .env conforme sua necessidade:
+
 ```bash
 env
 DB_DATABASE=laravel
@@ -63,7 +65,7 @@ Este comando executará automaticamente:
 
 ## Rate Limiting
 
-A API implementa limitação de requisições que limita as requisições para 60 por minuto por usuário ou IP.
+A API possui um sistema de limitação de requisições que restringe cada usuário ou IP a um máximo de 60 requisições por minuto.
 
 ## Autenticação
 
