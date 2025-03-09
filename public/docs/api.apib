@@ -1,0 +1,295 @@
+FORMAT: 1A
+HOST: http://localhost:8000/api
+
+# Blog posts API
+
+API para gerenciamento de posts e usuários de um blog.
+
+# Group Autenticação
+
+- As rotas protegidas por autenticação necessitam de um token JWT no cabeçalho e esse token é disponibilizado após o login ou registro do usuário.
+- O token deve ser enviado no cabeçalho da requisição com a chave `Authorization` e o valor `Bearer {token}`.
+
+## Login [/auth/login]
+
+### Fazer login [POST]
+
++ Request (application/json)
+    + Attributes
+        + email: ana@example.com (string, required) - Email do usuário
+        + password: 123456 (string, required) - Senha do usuário
+
++ Response 200 (application/json)
+    + Attributes
+        + message: Login realizado com sucesso (string)
+        + user
+            + id: 1 (number)
+            + nome: João Silva (string)
+            + email: joaosilva@example.com (string)
+            + telefone: `(85) 99999-9999` (string)
+            + is_valid: true (boolean)
+        + token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9... (string)
+
++ Response 401 (application/json)
+    + Attributes
+        + message: Credenciais inválidas. Verifique seu email e senha (string)
+
+## Registro [/auth/register]
+
+### Registrar usuário [POST]
+
++ Request (application/json)
+    + Attributes
+        + nome: Marcos Silva (string, required) - Nome do usuário
+        + email: marcossilva@example.com (string, required) - Email do usuário
+        + password: 123456 (string, required) - Senha do usuário
+        + telefone: `(85) 99999-9999` (string, required) - Telefone do usuário
+
++ Response 201 (application/json)
+    + Attributes
+        + message: Usuário registrado com sucesso (string)
+        + user
+            + id: 1 (number)
+            + nome: Marcos Silva (string)
+            + email: marcossilva@example.com (string)
+            + telefone: `(85) 99999-9999` (string)
+            + is_valid: true (boolean)
+        + token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9... (string)
+
+## Logout [/auth/logout]
+
+### Fazer logout [POST]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+
++ Response 200 (application/json)
+    + Attributes
+        + message: Logout realizado com sucesso (string)
+
+# Group Posts
+
+## Posts Collection [/posts{?tag,query,page}]
+
+### Listar posts [GET]
+Lista todos os posts do blog. Pode ser filtrado por tag, termo de busca (query) ou página.
+
++ Parameters
+    + tag: javascript (string, optional) - Filtrar posts por tag específica
+    + query: tutorial (string, optional) - Buscar posts por título ou conteúdo
+    + page: 1 (number, optional) - Número da página para paginação
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+
++ Response 200 (application/json)
+    + Attributes
+        + data (array)
+            + (object)
+                + id: 1 (number)
+                + title: Primeiro Post (string)
+                + content: Conteúdo do post... (string)
+                + tags: javascript, tutorial (array)
+                + author
+                    + id: 1 (number)
+                    + nome: João Silva (string)
+                    + email: joaosilva@example.com (string)
+        + current_page: 1 (number)
+        + last_page: 5 (number)
+        + per_page: 15 (number)
+        + total: 72 (number)
+        + links
+            + first: {HOST}/api/posts?page=1 (string)
+            + last: {HOST}/api/posts?page=5 (string)
+            + prev: null (string)
+            + next: {HOST}/api/posts?page=2 (string)
+
+### Criar post [POST]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+
+    + Attributes
+        + title: Novo Post (string, required) - Título do post
+        + content: Conteúdo do post... (string, required) - Conteúdo do post
+        + tags: javascript, tutorial (array, required) - Tags do post
+        + author: 1 (number, required) - ID do autor
+
++ Response 201 (application/json)
+    + Attributes
+        + id: 1 (number)
+        + title: Novo Post (string)
+        + content: Conteúdo do post... (string)
+        + tags: javascript, tutorial (array)
+        + author
+            + id: 1 (number)
+            + nome: João Silva (string)
+            + email: joaosilva@example.com (string)
+            + telefone: `(85) 99999-9999` (string)
+            + is_valid: true (boolean)
+
+## Post por id [/posts/{id}]
+
++ Parameters
+    + id: 1 (number, required) - ID do post
+
+### Visualizar post [GET]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+
++ Response 200 (application/json)
+    + Attributes
+        + id: 1 (number)
+        + title: Novo Post (string)
+        + content: Conteúdo do post... (string)
+        + tags: javascript, tutorial (array)
+        + author
+            + id: 1 (number)
+            + nome: João Silva (string)
+            + email: joaosilva@example.com (string)
+            + telefone: `(85) 99999-9999` (string)
+            + is_valid: true (boolean)
+
+### Atualizar post [PUT]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+
+    + Attributes
+        + title: Post Atualizado (string, optional)
+        + content: Novo conteúdo... (string, optional)
+        + tags: javascript, tutorial, update (array, optional)
+        + author: 2 (number, optional)
+
++ Response 200 (application/json)
+    + Attributes
+        + id: 1 (number)
+        + title: Post Atualizado (string)
+        + content: Novo conteúdo... (string)
+        + tags: javascript, tutorial, update (array)
+        + author
+            + id: 2 (number)
+            + nome: Maria Silva (string)
+            + email: mariasilva@example.com (string)
+            + telefone: `(85) 99999-9999` (string)
+            + is_valid: true (boolean)
+
+### Excluir post [DELETE]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+
++ Response 204
+
+# Group Usuários
+
+## Usuários [/users]
+
+### Listar todos os usuários [GET]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+
++ Response 200 (application/json)
+    + Attributes
+        + data (array)
+            + (object)
+                + id: 1 (number)
+                + nome: João Silva (string)
+                + email: joaosilva@example.com (string)
+                + telefone: `(85) 99999-9999` (string)
+                + is_valid: true (boolean)
+        + current_page: 1 (number)
+        + last_page: 5 (number)
+        + per_page: 15 (number)
+        + total: 72 (number)
+        + links
+            + first: {HOST}/api/users?page=1 (string)
+            + last: {HOST}/api/users?page=5 (string)
+            + prev: null (string)
+            + next: {HOST}/api/users?page=2 (string)
+
+## Usuário [/users/{id}]
+
++ Parameters
+    + id: 1 (number, required) - ID do usuário
+
+### Visualizar usuário [GET]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+
++ Response 200 (application/json)
+    + Attributes
+        + id: 1 (number)
+        + nome: João Silva (string)
+        + email: joaosilva@example.com (string)
+        + telefone: `(85) 99999-9999` (string)
+        + is_valid: true (boolean)
+
+### Atualizar usuário [PUT]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+
+    + Attributes
+        + nome: João da Silva (string, optional)
+        + email: joaosilva@example.com (string, optional)
+        + password: 654321 (string, optional)
+        + telefone: `(85) 88888-8888` (string, optional)
+        + is_valid: true (boolean, optional)
+
++ Response 200 (application/json)
+    + Attributes
+        + id: 1 (number)
+        + nome: João da Silva (string)
+        + email: joaosilva@example.com (string)
+        + telefone: `(85) 88888-8888` (string)
+        + is_valid: true (boolean)
+
+### Excluir usuário [DELETE]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+
++ Response 204
+
+# Group Erros
+
+## Resposta de erro 401 [/unauthorized]
+
+### Erro de autenticação [GET]
+
+Retornado quando uma requisição é feita sem autenticação para uma url autenticada ou com token inválido.
++ Response 401 (application/json)
+    + Attributes
+        + message: Não autorizado. Por favor, faça login para acessar este recurso. (string)
+
+## Resposta de erro 404 [/not-found]
+
+### Url não encontrada [GET]
+Retornado quando a url solicitada não existe.
++ Response 404 (application/json)
+    + Attributes
+        + message: URL não encontrada. (string)
