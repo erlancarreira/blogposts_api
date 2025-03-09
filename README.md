@@ -32,7 +32,7 @@ cd blogposts
 ```
 
 2. Configure o ambiente
-Ajuste as variáveis de banco de dados no arquivo .env conforme sua necessidade:
+  - Ajuste as variáveis de banco de dados no arquivo .env conforme sua necessidade:
 ```bash
 cp .env.example .env
 ```
