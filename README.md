@@ -28,7 +28,7 @@ O projeto implementa:
 1. Clone o repositório
 ```bash
 git clone https://github.com/erlancarreira/blogposts_api.git
-cd blogposts
+cd blogposts_api
 ```
 
 2. Configure o ambiente
