@@ -54,6 +54,10 @@ Este comando executará automaticamente:
 - Instalação e configuração do Passport
 - Limpeza dos caches de configuração
 
+## Rate Limiting
+
+A API implementa limitação de requisições que limita as requisições para 60 por minuto por usuário ou IP.
+
 ## Autenticação
 
 A API utiliza token via Laravel Passport. Todas as rotas (exceto login e registro) requerem autenticação.
@@ -176,11 +180,3 @@ O projeto inclui:
 - Testes de tratamento de erros
 - Factories para geração de dados de teste
 - Ambiente isolado para cada execução
-
-## Contribuição
-
-1. Fork o projeto
-2. Crie uma branch (`git checkout -b feature/nome`)
-3. Commit as alterações (`git commit -m 'Descrição'`)
-4. Push para a branch (`git push origin feature/nome`)
-5. Crie um Pull Request
